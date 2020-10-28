@@ -3,7 +3,7 @@
 # Exercise 3.3
 import csv
 
-def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','):
+def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=',', silence_errors=False):
     '''
     Parse a delimited file into a list of records
     '''
@@ -19,11 +19,13 @@ def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','
         if select and has_headers:
             indices=[headers.index(colname) for colname in select]
             headers=select
+        elif select and not(has_headers):
+            raise RuntimeError('Select but file has no headers')
         else:
             indices=[]
 
         records=[]
-        for row in rows:
+        for rowno, row in enumerate(rows,1):
             if not row: # Skip rows with no data
                 continue
             # Filter the row if specific cols selected
@@ -32,7 +34,12 @@ def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','
 
             # Convert type if specified
             if types:
-                row=[func(val) for func, val in zip(types,row)]
+                try:
+                    row=[func(val) for func, val in zip(types,row)]
+                except ValueError as e:
+                    if not(silence_errors):
+                        print(f'Row {rowno}: Could not convert {row}')
+                        print(f'Row {rowno}: Reason {e}')
 
             if has_headers:
                 record=dict(zip(headers,row))
@@ -41,4 +48,3 @@ def parse_csv(filename, select=None, types=None, has_headers=True, delimiter=','
 
             records.append(record)
     return records
-
