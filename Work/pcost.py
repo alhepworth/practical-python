@@ -2,22 +2,14 @@
 #
 # Exercise 1.27
 import csv, sys
-
+import sys
+sys.path.append('/Users/amh/PycharmProjects/practical-python/Work/')
+import report
 
 def protfolio_cost(filename):
  'Does the calcs'
- totalCost = 0
- with open(filename, 'rt') as f:
- rows = csv.reader(f)
- next(rows)
- for row in rows:
- try:
- thisCost = int(row[1]) * float(row[2])
- totalCost += thisCost
- print("thisCost is ", round(thisCost, 0))
- except ValueError:
- print("Couldn't cast")
- return totalCost
+ portfolio = report.read_portfolio(filename)
+ return sum([s['shares'] * s['price'] for s in portfolio])
 
 if len(sys.argv)==2:
  filename=sys.argv[1]
