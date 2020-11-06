@@ -1,21 +1,20 @@
 # pcost.py
 #
 # Exercise 1.27
-import csv, sys
-import sys
-sys.path.append('/Users/amh/PycharmProjects/practical-python/Work/')
 import report
 
-def protfolio_cost(filename):
+def portfolio_cost(filename):
  'Does the calcs'
  portfolio = report.read_portfolio(filename)
  return sum([s['shares'] * s['price'] for s in portfolio])
 
-if len(sys.argv)==2:
- filename=sys.argv[1]
-else:
- filename='Data/portfolio.csv'
+def main(args):
+  if len(args) != 2:
+   raise SystemExit('Usage: %s portfoliofile' % args[0])
+  filename = args[1]
+  print('Total cost:', portfolio_cost(filename))
 
-print('filename is ',filename)
-cost = protfolio_cost('Data/missing.csv')
-print("cost is ", round(cost, 2))
+
+if __name__ == '__main__':
+ import sys
+ main(sys.argv)

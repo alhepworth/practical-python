@@ -1,22 +1,24 @@
 # report.py
 #
 # Exercise 2.4
+import sys; print('Python %s on %s' % (sys.version, sys.platform))
+sys.path.extend(['/Users/amh/PycharmProjects/practical-python', '/Users/amh/PycharmProjects/practical-python/Work'])
 
-import csv
-import sys
-sys.path.append('/Users/amh/PycharmProjects/practical-python/Work')
+
 import fileparse
 
+# import sys
+# sys.path.append('/Users/amh/PycharmProjects/practical-python/Work')
 
 
 def read_portfolio(filename):
  '''Computes the total cost (shares*price) of a portfolio file'''
- portfolio = parse_csv(filename,select=['name','shares','price'], types=[str,int,float])
+ portfolio = fileparse.parse_csv(filename,select=['name','shares','price'], types=[str,int,float])
  return portfolio
 
 def read_prices(filename):
  ''' reads a set of prices into dict '''
- prices = dict(parse_csv(filename,types=[str,float],has_headers=False))
+ prices = dict(fileparse.parse_csv(filename,types=[str,float],has_headers=False))
  '''
  prices = {}
  f=open('Data/prices.csv','r')
@@ -55,4 +57,11 @@ def portfolio_report(portfolio_file, prices_file):
  for name, shares, price, change in report:
   print(f'{name:>10s} {shares:>10d} {price:>10.2f} {change:>10.2f}')
 
-portfolio_report('Data/portfolio.csv','Data/prices.csv')
+def main(args):
+ if len(args) != 3:
+  raise SystemExit('Usage: %s portfile pricefile' % args[0])
+ portfolio_report(args[1], args[2])
+
+if __name__=='__main__':
+ import sys
+ main(sys.argv)
