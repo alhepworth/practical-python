@@ -13,21 +13,15 @@ import fileparse
 
 def read_portfolio(filename):
  '''Computes the total cost (shares*price) of a portfolio file'''
- portfolio = fileparse.parse_csv(filename,select=['name','shares','price'], types=[str,int,float])
- return portfolio
+ with open(filename) as lines:
+  portfolio = fileparse.parse_csv(lines,select=['name','shares','price'], types=[str,int,float])
+  return portfolio
 
 def read_prices(filename):
  ''' reads a set of prices into dict '''
- prices = dict(fileparse.parse_csv(filename,types=[str,float],has_headers=False))
- '''
- prices = {}
- f=open('Data/prices.csv','r')
- rows=csv.reader(f)
- for row in rows:
-  if len(row) > 0:
-   prices[row[0]] = float(row[1])
- '''
- return prices
+ with open(filename) as lines:
+  prices = dict(fileparse.parse_csv(lines,types=[str,float],has_headers=False))
+  return prices
 
 def calc_gain():
  portfolio=read_portfolio('Data/portfolio.csv')
