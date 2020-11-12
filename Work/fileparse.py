@@ -7,11 +7,12 @@ def parse_csv(lines, select=None, types=None, has_headers=True, delimiter=',', s
     '''
     Parse a delimited file into a list of records
     '''
+    rows = csv.reader(lines, delimiter=delimiter)
+
+
     # Read the file headers
     if has_headers:
         headers=next(rows)
-
-    rows = csv.reader(lines, delimiter=delimiter)
 
     # If a column selector was given, find indices of the specified columns.
     # Also narrow the set of headers used for resulting dictionaries
