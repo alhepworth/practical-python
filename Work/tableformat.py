@@ -59,6 +59,9 @@ def print_table(objects, columns, formatter):
         rowdata = [ str(getattr(obj, name)) for name in columns ]
         formatter.row(rowdata)
 
+class FormatError(Exception):
+    pass
+
 def create_formatter(name):
     if name=='txt':
         return TextTableFormatter()
@@ -67,6 +70,5 @@ def create_formatter(name):
     elif name=='html':
         return HTMLTableFormatter()
     else:
-        raise RuntimeError(f'Unknown format {fmt}')
-
+        raise FormatError(f'Unknown format {name}')
 
