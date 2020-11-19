@@ -6,7 +6,7 @@ import report
 def portfolio_cost(filename):
  'Does the calcs'
  portfolio = report.read_portfolio(filename)
- return sum([s.shares * s.price for s in portfolio])
+ return portfolio.total_cost
 
 def main(args):
   if len(args) != 2:

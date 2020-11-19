@@ -3,6 +3,7 @@
 import fileparse
 from stock import Stock
 import tableformat
+from portfolio import Portfolio
 
 def read_portfolio(filename):
     '''
@@ -15,7 +16,7 @@ def read_portfolio(filename):
                                         types=[str,int,float])
 
     portfolio = [ Stock(d['name'], d['shares'], d['price']) for d in portdicts ]
-    return portfolio
+    return Portfolio(portfolio)
 
 def read_prices(filename):
     '''
@@ -62,8 +63,8 @@ def portfolio_report(portfoliofile, pricefile, fmt='txt'):
     print_report(report, tableformatter)
 
 def main(args):
-    if len(args) not in [3,4]:
-        raise SystemExit('Usage: %s portfile pricefile' % args[0])
+    if len(args) != 4:
+        raise SystemExit('Usage: %s portfile pricefile format' % args[0])
     portfolio_report(args[1], args[2], args[3])
 
 if __name__ == '__main__':
